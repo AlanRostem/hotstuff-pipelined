@@ -67,6 +67,12 @@ func (c *sequentialPipedCommitter) Commit(block *hotstuff.Block) {
 	c.logger.Debugf("Commit (currentCi: %d, currentView: %d): new incoming block {p:%d, v:%d, h:%s}",
 		c.currentPipe, c.currentView,
 		block.Pipe(), block.View(), block.Hash().String()[:4])
+
+	c.eventLoop.AddEvent(hotstuff.CommitEvent{
+		Pipe:         block.Pipe(),
+		QueuedBlocks: len(c.waitingBlocksAtPipe[block.Pipe()]),
+	})
+
 	c.mut.Lock()
 	// can't recurse due to requiring the mutex, so we use a helper instead.
 	err := c.commitInner(block)

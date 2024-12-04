@@ -177,7 +177,7 @@ func (srv *clientSrv) Exec(onPipe hotstuff.Pipe, cmd hotstuff.Command) {
 		return
 	}
 
-	srv.eventLoop.AddEvent(hotstuff.CommitEvent{Pipe: onPipe, Commands: len(batch.GetCommands())})
+	srv.eventLoop.AddEvent(hotstuff.ExecEvent{Pipe: onPipe, Commands: len(batch.GetCommands())})
 	srv.logger.Debugf("Executed %d commands", len(batch.GetCommands()))
 
 	for _, cmd := range batch.GetCommands() {

@@ -24,6 +24,8 @@ message ThroughputMeasurement {
   uint64 Commands = 3;
   google.protobuf.Duration Duration = 4;
   uint32 Pipe = 5;
+  uint64 Execs = 6;
+  uint64 QueuedBlocks = 7;
 }
 
 message TotalThroughputMeasurement {
@@ -32,6 +34,7 @@ message TotalThroughputMeasurement {
   uint64 Commands = 3;
   google.protobuf.Duration Duration = 4;
   uint32 PipeCount = 5;
+  uint64 Execs = 6;
 }
 
 message LatencyMeasurement {

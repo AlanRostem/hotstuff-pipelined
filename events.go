@@ -61,9 +61,14 @@ type NewViewMsg struct {
 	SyncInfo SyncInfo // The highest QC / TC.
 }
 
-// CommitEvent is raised whenever a block is committed,
-// and includes the number of client commands that were executed.
 type CommitEvent struct {
+	Pipe         Pipe
+	QueuedBlocks int
+}
+
+// ExecEvent is raised whenever a block is executed after being committed,
+// and includes the number of client commands that were executed.
+type ExecEvent struct {
 	Pipe     Pipe
 	Commands int
 }
