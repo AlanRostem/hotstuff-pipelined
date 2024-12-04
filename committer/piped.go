@@ -68,11 +68,6 @@ func (c *sequentialPipedCommitter) Commit(block *hotstuff.Block) {
 		c.currentPipe, c.currentView,
 		block.Pipe(), block.View(), block.Hash().String()[:4])
 
-	c.eventLoop.AddEvent(hotstuff.CommitEvent{
-		Pipe:         block.Pipe(),
-		QueuedBlocks: len(c.waitingBlocksAtPipe[block.Pipe()]),
-	})
-
 	c.mut.Lock()
 	// can't recurse due to requiring the mutex, so we use a helper instead.
 	err := c.commitInner(block)
@@ -88,6 +83,11 @@ func (c *sequentialPipedCommitter) Commit(block *hotstuff.Block) {
 	if err != nil {
 		c.logger.Debug(err)
 	}
+
+	c.eventLoop.AddEvent(hotstuff.CommitEvent{
+		Pipe:         block.Pipe(),
+		QueuedBlocks: len(c.waitingBlocksAtPipe[block.Pipe()]),
+	})
 }
 
 // Retrieve the last block which was committed on an pipe. Use zero if pipelining is not used.
